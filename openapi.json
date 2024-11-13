@@ -31,6 +31,14 @@
       "description": "Endpoints untuk mengelola dataset"
     },
     {
+      "name": "Plants",
+      "description": "Plant information data endpoint"
+    },
+    {
+      "name": "Diseases",
+      "description": "Diseases information data endpoint"
+    },
+    {
       "name": "GET",
       "description": "Endpoints dengan method GET"
     },
@@ -841,6 +849,7 @@
       "get": {
         "tags": ["Datasets", "GET"]
       },
+
       "put": {
         "tags": ["Datasets", "PUT"]
       },
@@ -875,6 +884,52 @@
         },
         "required": ["isAdmin", "isExpert"]
       },
+
+      "DiseaseResult": {
+        "type": "object",
+        "properties": {
+          "plantScientificName": {
+            "type": "string",
+            "example": "Manihot esculenta"
+          },
+
+          "isHealthy": {
+            "type": "boolean",
+            "example": false
+          },
+
+          "diseaseType": {
+            "type": "string",
+            "enum": ["disease", "pest", "nutrientDeficiency"]
+          },
+
+          "accuracy": {
+            "type": "number",
+            "example": 90
+          }
+        }
+      },
+
+      "HealthyResult": {
+        "type": "object",
+        "properties": {
+          "plantScientificName": {
+            "type": "string",
+            "example": "Oryza sativa"
+          },
+
+          "isHealthy": {
+            "type": "boolean",
+            "example": true
+          },
+
+          "accuracy": {
+            "type": "number",
+            "example": 80
+          }
+        }
+      },
+
       "InternalError": {
         "type": "object",
         "properties": {
@@ -884,6 +939,7 @@
           }
         }
       },
+
       "UnauthorizedError": {
         "type": "object",
         "properties": {
