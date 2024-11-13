@@ -16,19 +16,35 @@
   "tags": [
     {
       "name": "Users Additional Info",
-      "description": "Endpoint untuk pengelolaan data tambahan user"
+      "description": "Endpoints untuk pengelolaan data tambahan user"
     },
     {
       "name": "Scan",
-      "description": "Endpoint untuk mengirim scan tanaman"
+      "description": "Endpoints untuk mengirim scan tanaman"
     },
     {
       "name": "Results",
-      "description": "Endpoint untuk data hasil scan"
+      "description": "Endpoints untuk data hasil scan"
     },
     {
       "name": "Datasets",
-      "description": "Endpoint untuk mengelola dataset"
+      "description": "Endpoints untuk mengelola dataset"
+    },
+    {
+      "name": "GET",
+      "description": "Endpoints dengan method GET"
+    },
+    {
+      "name": "POST",
+      "description": "Endpoints dengan method POST"
+    },
+    {
+      "name": "PUT",
+      "description": "Endpoints dengan method PUT"
+    },
+    {
+      "name": "DELETE",
+      "description": "Endpoints dengan method DELETE"
     }
   ],
 
@@ -42,7 +58,7 @@
   "paths": {
     "/users/add_info": {
       "post": {
-        "tags": ["Users Additional Info"],
+        "tags": ["Users Additional Info", "POST"],
 
         "summary": "Melengkapi data tambahan pribadi",
 
@@ -128,7 +144,7 @@
       },
 
       "get": {
-        "tags": ["Users Additional Info"],
+        "tags": ["Users Additional Info", "GET"],
 
         "summary": "Mendapatkan detail user tambahan pribadi",
 
@@ -137,6 +153,7 @@
         "responses": {
           "200": {
             "description": "OK | Berhasil mendapatkan data user",
+
             "content": {
               "application/js": {
                 "schema": {
@@ -148,6 +165,7 @@
 
           "401": {
             "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+
             "content": {
               "application/json": {
                 "schema": {
@@ -159,6 +177,7 @@
 
           "403": {
             "description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
+
             "content": {
               "application/json": {
                 "schema": {
@@ -206,7 +225,7 @@
       },
 
       "put": {
-        "tags": ["Users Additional Info"],
+        "tags": ["Users Additional Info", "PUT"],
 
         "summary": "Mengupdate detail user tambahan pribadi",
 
@@ -308,7 +327,7 @@
 
     "/scan": {
       "post": {
-        "tags": ["Scan"],
+        "tags": ["Scan", "POST"],
         "summary": "Memindai gambar",
         "description": "Endpoint ini digunakan untuk memindai gambar yang dikirimkan melalui request body. Gambar akan dianalisis dan hasilnya dikembalikan dalam response.",
         "requestBody": {
@@ -406,7 +425,7 @@
 
     "/results": {
       "get": {
-        "tags": ["Results"],
+        "tags": ["Results", "GET"],
         "summary": "Menampilkan hasil pemindaian gambar",
         "description": "Endpoint ini menampilkan hasil dari pemindaian gambar yang sebelumnya dikirim ke endpoint /scan.",
         "parameters": [
@@ -503,7 +522,7 @@
     },
     "/result/{resultId}": {
       "get": {
-        "tags": ["Results"],
+        "tags": ["Results", "GET"],
         "summary": "Menampilkan hasil pemindaian berdasarkan resultId",
         "description": "Endpoint ini menampilkan hasil spesifik dari pemindaian gambar berdasarkan resultId.",
         "parameters": [
@@ -579,7 +598,7 @@
       },
 
       "delete": {
-        "tags": ["Results"],
+        "tags": ["Results", "DELETE"],
         "summary": "Menghapus hasil pemindaian berdasarkan resultId",
         "description": "Endpoint ini menghapus hasil pemindaian tertentu berdasarkan resultId.",
         "parameters": [
@@ -661,7 +680,7 @@
 
     "/result/{resultId}/rate": {
       "post": {
-        "tags": ["Results"],
+        "tags": ["Results", "POST"],
         "summary": "Memberikan rating pada hasil pemindaian",
         "description": "Endpoint ini memungkinkan pengguna untuk memberikan rating pada hasil pemindaian gambar berdasarkan resultId.",
         "parameters": [
