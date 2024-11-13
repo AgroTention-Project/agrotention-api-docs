@@ -19,6 +19,10 @@
       "description": "Endpoint untuk pengelolaan data tambahan user"
     },
     {
+      "name": "Scan",
+      "description": "Endpoint untuk mengirim scan tanaman"
+    },
+    {
       "name": "Results",
       "description": "Endpoint untuk data hasil scan"
     },
@@ -202,7 +206,7 @@
       },
 
       "put": {
-        "tags": ["USers Additional Info"],
+        "tags": ["Users Additional Info"],
 
         "summary": "Mengupdate detail user tambahan pribadi",
 
@@ -304,7 +308,7 @@
 
     "/scan": {
       "post": {
-        "tags": ["scan"],
+        "tags": ["Scan"],
         "summary": "Memindai gambar",
         "description": "Endpoint ini digunakan untuk memindai gambar yang dikirimkan melalui request body. Gambar akan dianalisis dan hasilnya dikembalikan dalam response.",
         "requestBody": {
@@ -402,7 +406,7 @@
 
     "/results": {
       "get": {
-        "tags": ["results"],
+        "tags": ["Results"],
         "summary": "Menampilkan hasil pemindaian gambar",
         "description": "Endpoint ini menampilkan hasil dari pemindaian gambar yang sebelumnya dikirim ke endpoint /scan.",
         "parameters": [
@@ -499,7 +503,7 @@
     },
     "/result/{resultId}": {
       "get": {
-        "tags": ["results"],
+        "tags": ["Results"],
         "summary": "Menampilkan hasil pemindaian berdasarkan resultId",
         "description": "Endpoint ini menampilkan hasil spesifik dari pemindaian gambar berdasarkan resultId.",
         "parameters": [
@@ -573,8 +577,9 @@
           }
         }
       },
+
       "delete": {
-        "tags": ["results"],
+        "tags": ["Results"],
         "summary": "Menghapus hasil pemindaian berdasarkan resultId",
         "description": "Endpoint ini menghapus hasil pemindaian tertentu berdasarkan resultId.",
         "parameters": [
@@ -656,7 +661,7 @@
 
     "/result/{resultId}/rate": {
       "post": {
-        "tags": ["results"],
+        "tags": ["Results"],
         "summary": "Memberikan rating pada hasil pemindaian",
         "description": "Endpoint ini memungkinkan pengguna untuk memberikan rating pada hasil pemindaian gambar berdasarkan resultId.",
         "parameters": [
