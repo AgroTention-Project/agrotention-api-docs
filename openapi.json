@@ -1,9 +1,10 @@
 {
   "openapi": "3.0.3",
+
   "info": {
     "title": "AgroTention API",
     "version": "dev-0.1.0",
-    "description": "AgroTention App Backend RESTFul API"
+    "description": "AgroTention adalah RESTful API backend yang dirancang untuk mendukung aplikasi AgroTention, sebuah solusi inovatif untuk deteksi tanaman dan manajemen pertanian. API ini memfasilitasi identifikasi tanaman, pemantauan kesehatan, serta manajemen tanaman melalui model pembelajaran mesin yang terintegrasi dengan teknologi pengenalan gambar. API ini menyediakan endpoint bagi pengguna untuk mengunggah gambar tanaman, menerima laporan diagnostik, dan mengakses data historis guna mendukung pengambilan keputusan yang lebih baik dalam praktik pertanian. AgroTention API memastikan interaksi yang aman, skalabel, dan efisien, menjadikannya alat yang penting bagi petani modern dan para penggiat pertanian."
   },
 
   "security": [
