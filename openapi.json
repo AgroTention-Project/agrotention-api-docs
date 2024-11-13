@@ -15,7 +15,7 @@
 
   "tags": [
     {
-      "name": "UsersAdditionalInfo",
+      "name": "Users Additional Info",
       "description": "Endpoint untuk pengelolaan data tambahan user"
     },
     {
@@ -38,7 +38,7 @@
   "paths": {
     "/users/add_info": {
       "post": {
-        "tags": ["users"],
+        "tags": ["Users Additional Info"],
 
         "summary": "Melengkapi data tambahan pribadi",
 
@@ -124,7 +124,7 @@
       },
 
       "get": {
-        "tags": ["users"],
+        "tags": ["Users Additional Info"],
 
         "summary": "Mendapatkan detail user tambahan pribadi",
 
@@ -202,7 +202,7 @@
       },
 
       "put": {
-        "tags": ["users"],
+        "tags": ["USers Additional Info"],
 
         "summary": "Mengupdate detail user tambahan pribadi",
 
