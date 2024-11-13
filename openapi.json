@@ -56,7 +56,7 @@
   ],
 
   "paths": {
-    "/users/add_info": {
+    "/users/{userUid}/additional_info": {
       "post": {
         "tags": ["Users Additional Info", "POST"],
 
@@ -322,6 +322,30 @@
             }
           }
         }
+      }
+    },
+
+    "/users/{userUid}/promote_to_admin": {
+      "post": {
+        "tags": ["Users Additional Info", "POST"],
+        "responses": {}
+      }
+    },
+
+    "/users/{userUid}/promote_to_expert": {
+      "post": {
+        "tags": ["Users Additional Info", "POST"]
+      }
+    },
+
+    "/users/expert_proposal": {
+      "post": {
+        "tags": ["Users Additional Info", "POST"],
+        "responses": {}
+      },
+      "get": {
+        "tags": ["Users Additional Info", "GET"],
+        "responses": {}
       }
     },
 
@@ -801,6 +825,28 @@
             }
           }
         }
+      }
+    },
+    "/datasets": {
+      "post": {
+        "tags": ["Datasets", "POST"]
+      },
+
+      "get": {
+        "tags": ["Datasets", "GET"]
+      }
+    },
+
+    "/datasets/{datasetId}": {
+      "get": {
+        "tags": ["Datasets", "GET"]
+      },
+      "put": {
+        "tags": ["Datasets", "PUT"]
+      },
+
+      "delete": {
+        "tags": ["Datasets", "DELETE"]
       }
     }
   },
