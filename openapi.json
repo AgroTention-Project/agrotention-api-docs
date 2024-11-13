@@ -15,8 +15,16 @@
 
   "tags": [
     {
-      "name": "users",
-      "description": "Endpoint untuk pengelolaan data user"
+      "name": "UsersAdditionalInfo",
+      "description": "Endpoint untuk pengelolaan data tambahan user"
+    },
+    {
+      "name": "Results",
+      "description": "Endpoint untuk data hasil scan"
+    },
+    {
+      "name": "Datasets",
+      "description": "Endpoint untuk mengelola dataset"
     }
   ],
 
