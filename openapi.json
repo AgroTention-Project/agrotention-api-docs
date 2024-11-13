@@ -28,62 +28,6 @@
   ],
 
   "paths": {
-    "/": {
-      "description": "Root",
-      "get": {
-        "summary": "Root",
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil fetch root",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "routes": {
-                      "type": "object",
-                      "properties": {
-                        "/docs": {
-                          "type": "string"
-                        },
-                        "/users": {
-                          "type": "string"
-                        },
-                        "/scan": {
-                          "type": "string"
-                        },
-                        "/results": {
-                          "type": "string"
-                        },
-                        "/datasets": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
     "/users": {
       "get": {
         "tags": ["users"],
