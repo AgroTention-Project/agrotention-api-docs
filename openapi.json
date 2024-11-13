@@ -282,7 +282,14 @@
 
         "responses": {
           "200": {
-            "description": "OK | Berhasil mendapatkan data user"
+            "description": "OK | Berhasil mendapatkan data user",
+            "content": {
+              "application/js": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAdditionalInfo"
+                }
+              }
+            }
           },
 
           "401": {
@@ -1012,6 +1019,28 @@
 
   "components": {
     "schemas": {
+      "UserAdditionalInfo": {
+        "type": "object",
+        "properties": {
+          "isAdmin": {
+            "type": "boolean",
+            "default": false
+          },
+          "isExpert": {
+            "type": "boolean",
+            "default": false
+          },
+          "company": {
+            "type": "string",
+            "example": "Universitas A"
+          },
+          "roleAtCompany": {
+            "type": "string",
+            "example": "student"
+          }
+        },
+        "required": ["isAdmin", "isExpert"]
+      },
       "InternalError": {
         "type": "object",
         "properties": {
