@@ -36,101 +36,11 @@
   ],
 
   "paths": {
-    "/users": {
-      "get": {
-        "tags": ["users"],
-
-        "summary": "Mendapatkan list users",
-
-        "description": "Endpoint ini menampilkan daftar users aktif. Filter daftar user dengan query param.",
-
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil mendapatkan list users",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "userId": {
-                        "type": "string",
-                        "example": "01930d05-1181-7ebe-9b7b-0c9abf0367bc"
-                      },
-
-                      "username": {
-                        "type": "string",
-                        "example": "johndoe123"
-                      },
-
-                      "fullName": {
-                        "type": "string",
-                        "example": "John Doe"
-                      },
-
-                      "isExpert": {
-                        "type": "boolean",
-                        "example": false
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "401": {
-            "description": "UNAUTHORIZED | User belum login dan tidak memiliki JWT",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-
-          "404": {
-            "description": "NOT FOUND | User dengan kategori pada query param tidak ditemukan atau belum ada user terdaftar",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "user tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/users/{userId}": {
+    "/users/add_info": {
       "post": {
         "tags": ["users"],
 
-        "summary": "Melengkapi data user",
+        "summary": "Melengkapi data tambahan pribadi",
 
         "description": "Setelah mendaftar via google/facebook oauth, user melengkapi data umum ke endpoint ini. Hanya user yang belum memiliki data tambahan",
 
@@ -139,20 +49,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-
-                "properties": {
-                  "firstName": {
-                    "type": "string",
-                    "example": "Asep"
-                  },
-
-                  "lastName": {
-                    "type": "string",
-                    "example": "Jupri"
-                  }
-                },
-
-                "required": ["firstName"]
+                "$ref": "#/components/schemas/UserAdditionalInfo"
               }
             }
           }
@@ -229,7 +126,7 @@
       "get": {
         "tags": ["users"],
 
-        "summary": "Mendapatkan detail user berdasarkan userId",
+        "summary": "Mendapatkan detail user tambahan pribadi",
 
         "description": "",
 
@@ -303,10 +200,11 @@
           }
         }
       },
+
       "put": {
         "tags": ["users"],
 
-        "summary": "Mengupdate detail user berdasarkan userId",
+        "summary": "Mengupdate detail user tambahan pribadi",
 
         "description": "",
 
@@ -401,96 +299,9 @@
             }
           }
         }
-      },
-
-      "delete": {
-        "tags": ["users"],
-        "summary": "Menghapus user berdasarkan userId",
-        "description": "Endpoint ini digunakan untuk menghapus data user berdasarkan userId yang diberikan. Hanya user yang berhak atau admin yang bisa mengakses endpoint ini.",
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil menghapus data user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "user berhasil dihapus"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "FORBIDDEN | User mencoba menghapus data user lain tanpa izin",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "forbidden"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND | User dengan userId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "user {userId} tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
       }
     },
+
     "/scan": {
       "post": {
         "tags": ["scan"],
