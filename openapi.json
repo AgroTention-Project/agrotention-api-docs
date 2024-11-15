@@ -1107,27 +1107,26 @@
               "species": {
                 "type": "string",
                 "example": "nigricornis"
-              },
+              }
+            }
+          },
+          "pesticide": {
+            "type": "string",
+            "example": "Bacitracin"
+          },
 
-              "pesticide": {
-                "type": "string",
-                "example": "Bacitracin"
-              },
-
-              "relatedArticles": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "Title of the article"
-                    },
-                    "url": {
-                      "type": "string",
-                      "example": "https://example.com/article"
-                    }
-                  }
+          "relatedArticles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Title of the article"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "https://example.com/article"
                 }
               }
             }
