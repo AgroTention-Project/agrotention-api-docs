@@ -975,9 +975,84 @@
                 "example": "sativa"
               }
             }
+          },
+
+          "description": {
+            "type": "string",
+            "example": "Oryza sativa is a species of grass in the family Oryzaceae, native to Asia and Africa."
           }
         }
       },
+
+      "DiseaseSchema": {
+        "type": "object",
+        "properties": {
+          "diseaseScientificName": {
+            "type": "string",
+            "example": "Xanthomonas oryzae"
+          },
+          "description": {
+            "type": "string",
+            "example": "Xanthomonas oryzae is a bacterium that causes leaf spot disease in rice."
+          },
+          "classification": {
+            "type": "object",
+            "properties": {
+              "kingdom": {
+                "type": "string",
+                "example": "Bacteria"
+              },
+              "phylum": {
+                "type": "string",
+                "example": "Proteobacteria"
+              },
+              "class": {
+                "type": "string",
+                "example": "Gammaproteobacteria"
+              },
+              "order": {
+                "type": "string",
+                "example": "Xanthomonadales"
+              },
+              "family": {
+                "type": "string",
+                "example": "Xanthomonadaceae"
+              },
+              "genus": {
+                "type": "string",
+                "example": "Xanthomonas"
+              },
+              "species": {
+                "type": "string",
+                "example": "oryzae"
+              }
+            }
+          },
+
+          "pesticide": {
+            "type": "string",
+            "example": "Bacitracin"
+          },
+
+          "relatedArticles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Title of the article"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "https://example.com/article"
+                }
+              }
+            }
+          }
+        }
+      },
+
       "InternalError": {
         "type": "object",
         "properties": {
