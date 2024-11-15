@@ -1,1167 +1,1173 @@
 {
-  "openapi": "3.0.3",
-
-  "info": {
-    "title": "AgroTention API",
-    "version": "dev-0.1.0",
-    "description": "AgroTention adalah RESTful API backend yang dirancang untuk mendukung aplikasi AgroTention, sebuah solusi inovatif untuk deteksi tanaman dan manajemen pertanian. API ini memfasilitasi identifikasi tanaman, pemantauan kesehatan, serta manajemen tanaman melalui model pembelajaran mesin yang terintegrasi dengan teknologi pengenalan gambar. API ini menyediakan endpoint bagi pengguna untuk mengunggah gambar tanaman, menerima laporan diagnostik, dan mengakses data historis guna mendukung pengambilan keputusan yang lebih baik dalam praktik pertanian. AgroTention API memastikan interaksi yang aman, skalabel, dan efisien, menjadikannya alat yang penting bagi petani modern dan para penggiat pertanian."
-  },
-
-  "security": [
-    {
-      "JWT": []
-    }
-  ],
-
-  "tags": [
-    {
-      "name": "Users Additional Info",
-      "description": "Endpoints untuk pengelolaan data tambahan user"
-    },
-    {
-      "name": "Scan",
-      "description": "Endpoints untuk mengirim scan tanaman"
-    },
-    {
-      "name": "Results",
-      "description": "Endpoints untuk data hasil scan"
-    },
-    {
-      "name": "Datasets",
-      "description": "Endpoints untuk mengelola dataset"
-    },
-    {
-      "name": "Plants",
-      "description": "Plant information data endpoint"
-    },
-    {
-      "name": "Diseases",
-      "description": "Diseases information data endpoint"
-    },
-    {
-      "name": "GET",
-      "description": "Endpoints dengan method GET"
-    },
-    {
-      "name": "POST",
-      "description": "Endpoints dengan method POST"
-    },
-    {
-      "name": "PUT",
-      "description": "Endpoints dengan method PUT"
-    },
-    {
-      "name": "DELETE",
-      "description": "Endpoints dengan method DELETE"
-    }
-  ],
-
-  "servers": [
-    {
-      "description": "Local Development Server",
-      "url": "http://localhost:8080"
-    }
-  ],
-
-  "paths": {
-    "/users/{userUid}/additional_info": {
-      "post": {
-        "tags": ["Users Additional Info", "POST"],
-
-        "summary": "Melengkapi data tambahan pribadi",
-
-        "description": "Setelah mendaftar via google/facebook oauth, user melengkapi data umum ke endpoint ini. Hanya user yang belum memiliki data tambahan",
-
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "$ref": "#/components/schemas/UserAdditionalInfo"
-              }
-            }
-          }
-        },
-
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil menambahkan data user"
-          },
-
-          "400": {
-            "description": "BAD REQUEST | User memasukkan data yang invalid"
-          },
-
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-
-          "403": {
-            "description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "forbidden"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "404": {
-            "description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mengganti data user tetapi userId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "user {userId} tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "get": {
-        "tags": ["Users Additional Info", "GET"],
-
-        "summary": "Mendapatkan detail user tambahan pribadi",
-
-        "description": "",
-
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil mendapatkan data user",
-
-            "content": {
-              "application/js": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserAdditionalInfo"
-                }
-              }
-            }
-          },
-
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-
-          "403": {
-            "description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "forbidden"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "404": {
-            "description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "user {userId} tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "put": {
-        "tags": ["Users Additional Info", "PUT"],
-
-        "summary": "Mengupdate detail user tambahan pribadi",
-
-        "description": "",
-
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil mengupdate data user"
-          },
-
-          "400": {
-            "description": "BAD REQUEST | User memasukkan data yang invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "first name harus diisi"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-
-          "403": {
-            "description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "forbidden"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "404": {
-            "description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "user {userId} tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/users/{userUid}/promote_to_admin": {
-      "post": {
-        "tags": ["Users Additional Info", "POST"],
-        "responses": {}
-      }
-    },
-
-    "/users/{userUid}/promote_to_expert": {
-      "post": {
-        "tags": ["Users Additional Info", "POST"]
-      }
-    },
-
-    "/users/expert_proposal": {
-      "post": {
-        "tags": ["Users Additional Info", "POST"],
-        "responses": {}
-      },
-      "get": {
-        "tags": ["Users Additional Info", "GET"],
-        "responses": {}
-      }
-    },
-
-    "/scan": {
-      "post": {
-        "tags": ["Scan", "POST"],
-        "summary": "Memindai gambar",
-        "description": "Endpoint ini digunakan untuk memindai gambar yang dikirimkan melalui request body. Gambar akan dianalisis dan hasilnya dikembalikan dalam response.",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Gambar yang akan dipindai"
-                  }
-                },
-                "required": ["image"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil memindai gambar",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "scanResult": {
-                      "type": "object",
-                      "description": "Hasil pemindaian gambar",
-                      "properties": {
-                        "detectedObject": {
-                          "type": "string",
-                          "example": "Tomato Plant"
-                        },
-                        "confidence": {
-                          "type": "number",
-                          "format": "float",
-                          "example": 0.98
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BAD REQUEST | Gambar tidak valid atau format tidak sesuai",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "gambar tidak valid"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/results": {
-      "get": {
-        "tags": ["Results", "GET"],
-        "summary": "Menampilkan hasil pemindaian gambar",
-        "description": "Endpoint ini menampilkan hasil dari pemindaian gambar yang sebelumnya dikirim ke endpoint /scan.",
-        "parameters": [
-          {
-            "name": "scanId",
-            "in": "query",
-            "required": true,
-            "description": "ID pemindaian untuk mengambil hasil spesifik",
-            "schema": {
-              "type": "string",
-              "example": "abc123xyz"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil mendapatkan hasil pemindaian",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "scanResult": {
-                      "type": "object",
-                      "description": "Hasil pemindaian gambar",
-                      "properties": {
-                        "detectedObject": {
-                          "type": "string",
-                          "example": "Tomato Plant"
-                        },
-                        "confidence": {
-                          "type": "number",
-                          "format": "float",
-                          "example": 0.98
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2024-11-11T12:34:56Z"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BAD REQUEST | scanId tidak valid atau tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "scanId tidak valid atau tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/result/{resultId}": {
-      "get": {
-        "tags": ["Results", "GET"],
-        "summary": "Menampilkan hasil pemindaian berdasarkan resultId",
-        "description": "Endpoint ini menampilkan hasil spesifik dari pemindaian gambar berdasarkan resultId.",
-        "parameters": [
-          {
-            "name": "resultId",
-            "in": "path",
-            "required": true,
-            "description": "ID hasil pemindaian untuk mendapatkan detail hasil tertentu",
-            "schema": {
-              "type": "string",
-              "example": "xyz789abc"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK | Berhasil mendapatkan detail hasil pemindaian",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "scanResult": {
-                      "type": "object",
-                      "description": "Detail hasil pemindaian gambar",
-                      "properties": {
-                        "detectedObject": {
-                          "type": "string",
-                          "example": "Tomato Plant"
-                        },
-                        "confidence": {
-                          "type": "number",
-                          "format": "float",
-                          "example": 0.98
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2024-11-11T12:34:56Z"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND | resultId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "resultId tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "delete": {
-        "tags": ["Results", "DELETE"],
-        "summary": "Menghapus hasil pemindaian berdasarkan resultId",
-        "description": "Endpoint ini menghapus hasil pemindaian tertentu berdasarkan resultId.",
-        "parameters": [
-          {
-            "name": "resultId",
-            "in": "path",
-            "required": true,
-            "description": "ID hasil pemindaian untuk menghapus hasil tertentu",
-            "schema": {
-              "type": "string",
-              "example": "xyz789abc"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK | Hasil pemindaian berhasil dihapus",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Hasil pemindaian berhasil dihapus"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND | resultId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "resultId tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "UNAUTHORIZED | User tidak memiliki izin untuk menghapus data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/result/{resultId}/rate": {
-      "post": {
-        "tags": ["Results", "POST"],
-        "summary": "Memberikan rating pada hasil pemindaian",
-        "description": "Endpoint ini memungkinkan pengguna untuk memberikan rating pada hasil pemindaian gambar berdasarkan resultId.",
-        "parameters": [
-          {
-            "name": "resultId",
-            "in": "path",
-            "required": true,
-            "description": "ID hasil pemindaian untuk diberikan rating",
-            "schema": {
-              "type": "string",
-              "example": "xyz789abc"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Payload untuk memberikan rating",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "rating": {
-                    "type": "integer",
-                    "description": "Rating yang diberikan pada hasil pemindaian",
-                    "example": 4,
-                    "minimum": 1,
-                    "maximum": 5
-                  }
-                },
-                "required": ["rating"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK | Rating berhasil ditambahkan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Rating berhasil ditambahkan"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "resultId": {
-                          "type": "string",
-                          "example": "xyz789abc"
-                        },
-                        "rating": {
-                          "type": "integer",
-                          "example": 4
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BAD REQUEST | Permintaan tidak valid atau rating berada di luar rentang yang diizinkan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Rating harus antara 1 hingga 5"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NOT FOUND | resultId tidak ditemukan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "resultId tidak ditemukan"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "INTERNAL SERVER ERROR | Error pada server",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/datasets": {
-      "post": {
-        "tags": ["Datasets", "POST"]
-      },
-
-      "get": {
-        "tags": ["Datasets", "GET"]
-      }
-    },
-
-    "/datasets/{datasetId}": {
-      "get": {
-        "tags": ["Datasets", "GET"]
-      },
-
-      "put": {
-        "tags": ["Datasets", "PUT"]
-      },
-
-      "delete": {
-        "tags": ["Datasets", "DELETE"]
-      }
-    }
-  },
-
-  "components": {
-    "schemas": {
-      "UserAdditionalInfo": {
-        "type": "object",
-        "properties": {
-          "isAdmin": {
-            "type": "boolean",
-            "default": false
-          },
-          "isExpert": {
-            "type": "boolean",
-            "default": false
-          },
-          "company": {
-            "type": "string",
-            "example": "Universitas A"
-          },
-          "roleAtCompany": {
-            "type": "string",
-            "example": "student"
-          }
-        },
-        "required": ["isAdmin", "isExpert"]
-      },
-
-      "DiseaseResult": {
-        "type": "object",
-        "properties": {
-          "plantScientificName": {
-            "type": "string",
-            "example": "Manihot esculenta"
-          },
-
-          "isHealthy": {
-            "type": "boolean",
-            "example": false
-          },
-
-          "diseaseType": {
-            "type": "string",
-            "enum": ["disease", "pest", "nutrientDeficiency"]
-          },
-
-          "accuracy": {
-            "type": "number",
-            "example": 90
-          }
-        }
-      },
-
-      "HealthyResult": {
-        "type": "object",
-        "properties": {
-          "plantScientificName": {
-            "type": "string",
-            "example": "Oryza sativa"
-          },
-
-          "isHealthy": {
-            "type": "boolean",
-            "example": true
-          },
-
-          "accuracy": {
-            "type": "number",
-            "example": 80
-          }
-        }
-      },
-
-      "PlantSchema": {
-        "type": "object",
-        "properties": {
-          "plantScientificName": {
-            "type": "string",
-            "example": "Oryza sativa"
-          },
-          "classification": {
-            "type": "object",
-            "properties": {
-              "kingdom": {
-                "type": "string",
-                "example": "Plantae"
-              },
-
-              "division": {
-                "type": "string",
-                "example": "Tracheophyta"
-              },
-
-              "class": {
-                "type": "string",
-                "example": "Magnoliopsida"
-              },
-
-              "order": {
-                "type": "string",
-                "example": "Poales"
-              },
-
-              "family": {
-                "type": "string",
-                "example": "Oryzaceae"
-              },
-
-              "genus": {
-                "type": "string",
-                "example": "Oryza"
-              },
-
-              "species": {
-                "type": "string",
-                "example": "sativa"
-              }
-            }
-          },
-
-          "description": {
-            "type": "string",
-            "example": "Oryza sativa is a species of grass in the family Oryzaceae, native to Asia and Africa."
-          }
-        }
-      },
-
-      "DiseaseSchema": {
-        "type": "object",
-        "properties": {
-          "diseaseScientificName": {
-            "type": "string",
-            "example": "Xanthomonas oryzae"
-          },
-
-          "diseaseType": {
-            "type": "string",
-            "example": "disease"
-          },
-
-          "description": {
-            "type": "string",
-            "example": "Xanthomonas oryzae is a bacterium that causes leaf spot disease in rice."
-          },
-          "classification": {
-            "type": "object",
-            "properties": {
-              "kingdom": {
-                "type": "string",
-                "example": "Bacteria"
-              },
-              "phylum": {
-                "type": "string",
-                "example": "Proteobacteria"
-              },
-              "class": {
-                "type": "string",
-                "example": "Gammaproteobacteria"
-              },
-              "order": {
-                "type": "string",
-                "example": "Xanthomonadales"
-              },
-              "family": {
-                "type": "string",
-                "example": "Xanthomonadaceae"
-              },
-              "genus": {
-                "type": "string",
-                "example": "Xanthomonas"
-              },
-              "species": {
-                "type": "string",
-                "example": "oryzae"
-              }
-            }
-          },
-
-          "pesticide": {
-            "type": "string",
-            "example": "Bacitracin"
-          },
-
-          "relatedArticles": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Title of the article"
-                },
-                "url": {
-                  "type": "string",
-                  "example": "https://example.com/article"
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "PestSchema": {
-        "type": "object",
-        "properties": {
-          "pestScientificName": {
-            "type": "string",
-            "example": "Valanga nigricornis"
-          },
-
-          "diseaseType": {
-            "type": "string",
-            "example": "pest"
-          },
-
-          "description": {
-            "type": "string",
-            "example": "Valanga nigricornis is a pest that attacks rice plants."
-          },
-
-          "classification": {
-            "type": "object",
-            "properties": {
-              "kingdom": {
-                "type": "string",
-                "example": "Arthropoda"
-              },
-              "phylum": {
-                "type": "string",
-                "example": "Arachnida"
-              },
-              "class": {
-                "type": "string",
-                "example": "Insecta"
-              },
-              "order": {
-                "type": "string",
-                "example": "Hymenoptera"
-              },
-              "family": {
-                "type": "string",
-                "example": "Valangidae"
-              },
-              "genus": {
-                "type": "string",
-                "example": "Valanga"
-              },
-              "species": {
-                "type": "string",
-                "example": "nigricornis"
-              }
-            }
-          },
-          "pesticide": {
-            "type": "string",
-            "example": "Bacitracin"
-          },
-
-          "relatedArticles": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Title of the article"
-                },
-                "url": {
-                  "type": "string",
-                  "example": "https://example.com/article"
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "InternalError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string",
-            "example": "unhandeled client error"
-          }
-        }
-      },
-
-      "UnauthorizedError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string",
-            "example": "unauthorized"
-          }
-        }
-      }
-    },
-
-    "securitySchemes": {
-      "JWT": {
-        "description": "JSON Web Token dari firebase",
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    }
-  }
+	"openapi": "3.0.3",
+
+	"info": {
+		"title": "AgroTention API",
+		"version": "dev-0.1.0",
+		"description": "AgroTention adalah RESTful API backend yang dirancang untuk mendukung aplikasi AgroTention, sebuah solusi inovatif untuk deteksi tanaman dan manajemen pertanian. API ini memfasilitasi identifikasi tanaman, pemantauan kesehatan, serta manajemen tanaman melalui model pembelajaran mesin yang terintegrasi dengan teknologi pengenalan gambar. API ini menyediakan endpoint bagi pengguna untuk mengunggah gambar tanaman, menerima laporan diagnostik, dan mengakses data historis guna mendukung pengambilan keputusan yang lebih baik dalam praktik pertanian. AgroTention API memastikan interaksi yang aman, skalabel, dan efisien, menjadikannya alat yang penting bagi petani modern dan para penggiat pertanian."
+	},
+
+	"security": [
+		{
+			"JWT": []
+		}
+	],
+
+	"tags": [
+		{
+			"name": "Users Additional Info",
+			"description": "Endpoints untuk pengelolaan data tambahan user"
+		},
+		{
+			"name": "Scan",
+			"description": "Endpoints untuk mengirim scan tanaman"
+		},
+		{
+			"name": "Results",
+			"description": "Endpoints untuk data hasil scan"
+		},
+		{
+			"name": "Datasets",
+			"description": "Endpoints untuk mengelola dataset"
+		},
+		{
+			"name": "Plants",
+			"description": "Plant information data endpoint"
+		},
+		{
+			"name": "Diseases",
+			"description": "Diseases information data endpoint"
+		},
+		{
+			"name": "GET",
+			"description": "Endpoints dengan method GET"
+		},
+		{
+			"name": "POST",
+			"description": "Endpoints dengan method POST"
+		},
+		{
+			"name": "PUT",
+			"description": "Endpoints dengan method PUT"
+		},
+		{
+			"name": "DELETE",
+			"description": "Endpoints dengan method DELETE"
+		}
+	],
+
+	"servers": [
+		{
+			"description": "Local Development Server",
+			"url": "http://localhost:8080"
+		}
+	],
+
+	"paths": {
+		"/user_additional_info/{userUid}": {
+			"post": {
+				"tags": ["Users Additional Info", "POST"],
+
+				"summary": "Melengkapi data tambahan pribadi",
+
+				"description": "Setelah mendaftar via google/facebook oauth, user melengkapi data umum ke endpoint ini. Hanya user yang belum memiliki data tambahan",
+
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"$ref": "#/components/schemas/UserAdditionalInfo"
+							}
+						}
+					}
+				},
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil menambahkan data user"
+					},
+
+					"400": {
+						"description": "BAD REQUEST | User memasukkan data yang invalid"
+					},
+
+					"401": {
+						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+
+					"403": {
+						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string",
+											"example": "forbidden"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"404": {
+						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mengganti data user tetapi userId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string",
+											"example": "user {userId} tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"get": {
+				"tags": ["Users Additional Info", "GET"],
+
+				"summary": "Mendapatkan detail user tambahan pribadi",
+
+				"description": "",
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan data user",
+
+						"content": {
+							"application/js": {
+								"schema": {
+									"$ref": "#/components/schemas/UserAdditionalInfo"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+
+					"403": {
+						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string",
+											"example": "forbidden"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"404": {
+						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string",
+											"example": "user {userId} tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"put": {
+				"tags": ["Users Additional Info", "PUT"],
+
+				"summary": "Mengupdate detail user tambahan pribadi",
+
+				"description": "",
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mengupdate data user"
+					},
+
+					"400": {
+						"description": "BAD REQUEST | User memasukkan data yang invalid",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "first name harus diisi"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+
+					"403": {
+						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "forbidden"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"404": {
+						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "user {userId} tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/user_additional_info/{userUid}/promote_to_admin": {
+			"post": {
+				"tags": ["Users Additional Info", "POST"],
+				"responses": {
+					"200": {
+						"description": "OK | Success promote user to admin"
+					}
+				}
+			}
+		},
+
+		"/user_additional_info/{userUid}/promote_to_expert": {
+			"post": {
+				"tags": ["Users Additional Info", "POST"],
+				"responses": {}
+			}
+		},
+
+		"/user_additional_info/{userUid}/expert_proposal": {
+			"post": {
+				"tags": ["Users Additional Info", "POST"],
+				"responses": {}
+			},
+			"get": {
+				"tags": ["Users Additional Info", "GET"],
+				"responses": {}
+			}
+		},
+
+		"/scan": {
+			"post": {
+				"tags": ["Scan", "POST"],
+				"summary": "Memindai gambar",
+				"description": "Endpoint ini digunakan untuk memindai gambar yang dikirimkan melalui request body. Gambar akan dianalisis dan hasilnya dikembalikan dalam response.",
+				"requestBody": {
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"image": {
+										"type": "string",
+										"format": "binary",
+										"description": "Gambar yang akan dipindai"
+									}
+								},
+								"required": ["image"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil memindai gambar",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": true
+										},
+										"scanResult": {
+											"type": "object",
+											"description": "Hasil pemindaian gambar",
+											"properties": {
+												"detectedObject": {
+													"type": "string",
+													"example": "Tomato Plant"
+												},
+												"confidence": {
+													"type": "number",
+													"format": "float",
+													"example": 0.98
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BAD REQUEST | Gambar tidak valid atau format tidak sesuai",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "gambar tidak valid"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/results": {
+			"get": {
+				"tags": ["Results", "GET"],
+				"summary": "Menampilkan hasil pemindaian gambar",
+				"description": "Endpoint ini menampilkan hasil dari pemindaian gambar yang sebelumnya dikirim ke endpoint /scan.",
+				"parameters": [
+					{
+						"name": "scanId",
+						"in": "query",
+						"required": true,
+						"description": "ID pemindaian untuk mengambil hasil spesifik",
+						"schema": {
+							"type": "string",
+							"example": "abc123xyz"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan hasil pemindaian",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": true
+										},
+										"scanResult": {
+											"type": "object",
+											"description": "Hasil pemindaian gambar",
+											"properties": {
+												"detectedObject": {
+													"type": "string",
+													"example": "Tomato Plant"
+												},
+												"confidence": {
+													"type": "number",
+													"format": "float",
+													"example": 0.98
+												},
+												"timestamp": {
+													"type": "string",
+													"format": "date-time",
+													"example": "2024-11-11T12:34:56Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BAD REQUEST | scanId tidak valid atau tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "scanId tidak valid atau tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/results/{resultId}": {
+			"get": {
+				"tags": ["Results", "GET"],
+				"summary": "Menampilkan hasil pemindaian berdasarkan resultId",
+				"description": "Endpoint ini menampilkan hasil spesifik dari pemindaian gambar berdasarkan resultId.",
+				"parameters": [
+					{
+						"name": "resultId",
+						"in": "path",
+						"required": true,
+						"description": "ID hasil pemindaian untuk mendapatkan detail hasil tertentu",
+						"schema": {
+							"type": "string",
+							"example": "xyz789abc"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan detail hasil pemindaian",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": true
+										},
+										"scanResult": {
+											"type": "object",
+											"description": "Detail hasil pemindaian gambar",
+											"properties": {
+												"detectedObject": {
+													"type": "string",
+													"example": "Tomato Plant"
+												},
+												"confidence": {
+													"type": "number",
+													"format": "float",
+													"example": 0.98
+												},
+												"timestamp": {
+													"type": "string",
+													"format": "date-time",
+													"example": "2024-11-11T12:34:56Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NOT FOUND | resultId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "resultId tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"delete": {
+				"tags": ["Results", "DELETE"],
+				"summary": "Menghapus hasil pemindaian berdasarkan resultId",
+				"description": "Endpoint ini menghapus hasil pemindaian tertentu berdasarkan resultId.",
+				"parameters": [
+					{
+						"name": "resultId",
+						"in": "path",
+						"required": true,
+						"description": "ID hasil pemindaian untuk menghapus hasil tertentu",
+						"schema": {
+							"type": "string",
+							"example": "xyz789abc"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK | Hasil pemindaian berhasil dihapus",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": true
+										},
+										"message": {
+											"type": "string",
+											"example": "Hasil pemindaian berhasil dihapus"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NOT FOUND | resultId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "resultId tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "UNAUTHORIZED | User tidak memiliki izin untuk menghapus data",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizedError"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/result/{resultId}/rate": {
+			"post": {
+				"tags": ["Results", "POST"],
+				"summary": "Memberikan rating pada hasil pemindaian",
+				"description": "Endpoint ini memungkinkan pengguna untuk memberikan rating pada hasil pemindaian gambar berdasarkan resultId.",
+				"parameters": [
+					{
+						"name": "resultId",
+						"in": "path",
+						"required": true,
+						"description": "ID hasil pemindaian untuk diberikan rating",
+						"schema": {
+							"type": "string",
+							"example": "xyz789abc"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Payload untuk memberikan rating",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"rating": {
+										"type": "integer",
+										"description": "Rating yang diberikan pada hasil pemindaian",
+										"example": 4,
+										"minimum": 1,
+										"maximum": 5
+									}
+								},
+								"required": ["rating"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK | Rating berhasil ditambahkan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": true
+										},
+										"message": {
+											"type": "string",
+											"example": "Rating berhasil ditambahkan"
+										},
+										"data": {
+											"type": "object",
+											"properties": {
+												"resultId": {
+													"type": "string",
+													"example": "xyz789abc"
+												},
+												"rating": {
+													"type": "integer",
+													"example": 4
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BAD REQUEST | Permintaan tidak valid atau rating berada di luar rentang yang diizinkan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "Rating harus antara 1 hingga 5"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NOT FOUND | resultId tidak ditemukan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"error": {
+											"type": "string",
+											"example": "resultId tidak ditemukan"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR | Error pada server",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalError"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/datasets": {
+			"post": {
+				"tags": ["Datasets", "POST"]
+			},
+
+			"get": {
+				"tags": ["Datasets", "GET"]
+			}
+		},
+
+		"/datasets/{datasetId}": {
+			"get": {
+				"tags": ["Datasets", "GET"]
+			},
+
+			"put": {
+				"tags": ["Datasets", "PUT"]
+			},
+
+			"delete": {
+				"tags": ["Datasets", "DELETE"]
+			}
+		}
+	},
+
+	"components": {
+		"schemas": {
+			"UserAdditionalInfo": {
+				"type": "object",
+				"properties": {
+					"isAdmin": {
+						"type": "boolean",
+						"default": false
+					},
+					"isExpert": {
+						"type": "boolean",
+						"default": false
+					},
+					"company": {
+						"type": "string",
+						"example": "Universitas A"
+					},
+					"roleAtCompany": {
+						"type": "string",
+						"example": "student"
+					}
+				},
+				"required": ["isAdmin", "isExpert"]
+			},
+
+			"DiseaseResult": {
+				"type": "object",
+				"properties": {
+					"plantScientificName": {
+						"type": "string",
+						"example": "Manihot esculenta"
+					},
+
+					"isHealthy": {
+						"type": "boolean",
+						"example": false
+					},
+
+					"diseaseType": {
+						"type": "string",
+						"enum": ["disease", "pest", "nutrientDeficiency"]
+					},
+
+					"accuracy": {
+						"type": "number",
+						"example": 90
+					}
+				}
+			},
+
+			"HealthyResult": {
+				"type": "object",
+				"properties": {
+					"plantScientificName": {
+						"type": "string",
+						"example": "Oryza sativa"
+					},
+
+					"isHealthy": {
+						"type": "boolean",
+						"example": true
+					},
+
+					"accuracy": {
+						"type": "number",
+						"example": 80
+					}
+				}
+			},
+
+			"PlantSchema": {
+				"type": "object",
+				"properties": {
+					"plantScientificName": {
+						"type": "string",
+						"example": "Oryza sativa"
+					},
+					"classification": {
+						"type": "object",
+						"properties": {
+							"kingdom": {
+								"type": "string",
+								"example": "Plantae"
+							},
+
+							"division": {
+								"type": "string",
+								"example": "Tracheophyta"
+							},
+
+							"class": {
+								"type": "string",
+								"example": "Magnoliopsida"
+							},
+
+							"order": {
+								"type": "string",
+								"example": "Poales"
+							},
+
+							"family": {
+								"type": "string",
+								"example": "Oryzaceae"
+							},
+
+							"genus": {
+								"type": "string",
+								"example": "Oryza"
+							},
+
+							"species": {
+								"type": "string",
+								"example": "sativa"
+							}
+						}
+					},
+
+					"description": {
+						"type": "string",
+						"example": "Oryza sativa is a species of grass in the family Oryzaceae, native to Asia and Africa."
+					}
+				}
+			},
+
+			"DiseaseSchema": {
+				"type": "object",
+				"properties": {
+					"diseaseScientificName": {
+						"type": "string",
+						"example": "Xanthomonas oryzae"
+					},
+
+					"diseaseType": {
+						"type": "string",
+						"example": "disease"
+					},
+
+					"description": {
+						"type": "string",
+						"example": "Xanthomonas oryzae is a bacterium that causes leaf spot disease in rice."
+					},
+					"classification": {
+						"type": "object",
+						"properties": {
+							"kingdom": {
+								"type": "string",
+								"example": "Bacteria"
+							},
+							"phylum": {
+								"type": "string",
+								"example": "Proteobacteria"
+							},
+							"class": {
+								"type": "string",
+								"example": "Gammaproteobacteria"
+							},
+							"order": {
+								"type": "string",
+								"example": "Xanthomonadales"
+							},
+							"family": {
+								"type": "string",
+								"example": "Xanthomonadaceae"
+							},
+							"genus": {
+								"type": "string",
+								"example": "Xanthomonas"
+							},
+							"species": {
+								"type": "string",
+								"example": "oryzae"
+							}
+						}
+					},
+
+					"pesticide": {
+						"type": "string",
+						"example": "Bacitracin"
+					},
+
+					"relatedArticles": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"title": {
+									"type": "string",
+									"example": "Title of the article"
+								},
+								"url": {
+									"type": "string",
+									"example": "https://example.com/article"
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"PestSchema": {
+				"type": "object",
+				"properties": {
+					"pestScientificName": {
+						"type": "string",
+						"example": "Valanga nigricornis"
+					},
+
+					"diseaseType": {
+						"type": "string",
+						"example": "pest"
+					},
+
+					"description": {
+						"type": "string",
+						"example": "Valanga nigricornis is a pest that attacks rice plants."
+					},
+
+					"classification": {
+						"type": "object",
+						"properties": {
+							"kingdom": {
+								"type": "string",
+								"example": "Arthropoda"
+							},
+							"phylum": {
+								"type": "string",
+								"example": "Arachnida"
+							},
+							"class": {
+								"type": "string",
+								"example": "Insecta"
+							},
+							"order": {
+								"type": "string",
+								"example": "Hymenoptera"
+							},
+							"family": {
+								"type": "string",
+								"example": "Valangidae"
+							},
+							"genus": {
+								"type": "string",
+								"example": "Valanga"
+							},
+							"species": {
+								"type": "string",
+								"example": "nigricornis"
+							}
+						}
+					},
+					"pesticide": {
+						"type": "string",
+						"example": "Bacitracin"
+					},
+
+					"relatedArticles": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"title": {
+									"type": "string",
+									"example": "Title of the article"
+								},
+								"url": {
+									"type": "string",
+									"example": "https://example.com/article"
+								}
+							}
+						}
+					}
+				}
+			},
+
+			"InternalError": {
+				"type": "object",
+				"properties": {
+					"error": {
+						"type": "string",
+						"example": "unhandeled client error"
+					}
+				}
+			},
+
+			"UnauthorizedError": {
+				"type": "object",
+				"properties": {
+					"error": {
+						"type": "string",
+						"example": "unauthorized"
+					}
+				}
+			}
+		},
+
+		"securitySchemes": {
+			"JWT": {
+				"description": "JSON Web Token dari firebase",
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	}
 }
