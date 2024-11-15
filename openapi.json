@@ -991,6 +991,12 @@
             "type": "string",
             "example": "Xanthomonas oryzae"
           },
+
+          "diseaseType": {
+            "type": "string",
+            "example": "disease"
+          },
+
           "description": {
             "type": "string",
             "example": "Xanthomonas oryzae is a bacterium that causes leaf spot disease in rice."
@@ -1046,6 +1052,82 @@
                 "url": {
                   "type": "string",
                   "example": "https://example.com/article"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "PestSchema": {
+        "type": "object",
+        "properties": {
+          "pestScientificName": {
+            "type": "string",
+            "example": "Valanga nigricornis"
+          },
+
+          "diseaseType": {
+            "type": "string",
+            "example": "pest"
+          },
+
+          "description": {
+            "type": "string",
+            "example": "Valanga nigricornis is a pest that attacks rice plants."
+          },
+
+          "classification": {
+            "type": "object",
+            "properties": {
+              "kingdom": {
+                "type": "string",
+                "example": "Arthropoda"
+              },
+              "phylum": {
+                "type": "string",
+                "example": "Arachnida"
+              },
+              "class": {
+                "type": "string",
+                "example": "Insecta"
+              },
+              "order": {
+                "type": "string",
+                "example": "Hymenoptera"
+              },
+              "family": {
+                "type": "string",
+                "example": "Valangidae"
+              },
+              "genus": {
+                "type": "string",
+                "example": "Valanga"
+              },
+              "species": {
+                "type": "string",
+                "example": "nigricornis"
+              },
+
+              "pesticide": {
+                "type": "string",
+                "example": "Bacitracin"
+              },
+
+              "relatedArticles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Title of the article"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://example.com/article"
+                    }
+                  }
                 }
               }
             }
