@@ -930,6 +930,54 @@
         }
       },
 
+      "PlantSchema": {
+        "type": "object",
+        "properties": {
+          "plantScientificName": {
+            "type": "string",
+            "example": "Oryza sativa"
+          },
+          "classification": {
+            "type": "object",
+            "properties": {
+              "kingdom": {
+                "type": "string",
+                "example": "Plantae"
+              },
+
+              "division": {
+                "type": "string",
+                "example": "Tracheophyta"
+              },
+
+              "class": {
+                "type": "string",
+                "example": "Magnoliopsida"
+              },
+
+              "order": {
+                "type": "string",
+                "example": "Poales"
+              },
+
+              "family": {
+                "type": "string",
+                "example": "Oryzaceae"
+              },
+
+              "genus": {
+                "type": "string",
+                "example": "Oryza"
+              },
+
+              "species": {
+                "type": "string",
+                "example": "sativa"
+              }
+            }
+          }
+        }
+      },
       "InternalError": {
         "type": "object",
         "properties": {
