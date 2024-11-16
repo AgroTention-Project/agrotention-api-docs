@@ -4,8 +4,19 @@
 	"info": {
 		"title": "AgroTention API",
 		"version": "dev-0.1.0",
-		"description": "AgroTention adalah RESTful API backend yang dirancang untuk mendukung aplikasi AgroTention, sebuah solusi inovatif untuk deteksi tanaman dan manajemen pertanian. API ini memfasilitasi identifikasi tanaman, pemantauan kesehatan, serta manajemen tanaman melalui model pembelajaran mesin yang terintegrasi dengan teknologi pengenalan gambar. API ini menyediakan endpoint bagi pengguna untuk mengunggah gambar tanaman, menerima laporan diagnostik, dan mengakses data historis guna mendukung pengambilan keputusan yang lebih baik dalam praktik pertanian. AgroTention API memastikan interaksi yang aman, skalabel, dan efisien, menjadikannya alat yang penting bagi petani modern dan para penggiat pertanian."
+		"description": "AgroTention adalah RESTful API backend yang dirancang untuk mendukung aplikasi AgroTention, sebuah solusi inovatif untuk deteksi tanaman dan manajemen pertanian. API ini memfasilitasi identifikasi tanaman, pemantauan kesehatan, serta manajemen tanaman melalui model pembelajaran mesin yang terintegrasi dengan teknologi pengenalan gambar. API ini menyediakan endpoint bagi pengguna untuk mengunggah gambar tanaman, menerima laporan diagnostik, dan mengakses data historis guna mendukung pengambilan keputusan yang lebih baik dalam praktik pertanian. AgroTention API memastikan interaksi yang aman, skalabel, dan efisien, menjadikannya alat yang penting bagi petani modern dan para penggiat pertanian.",
+		"contact": {
+			"name": "AgroTention Team",
+			"email": "agrotentionproject@gmail.com"
+		}
 	},
+
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "Local Development Server"
+		}
+	],
 
 	"security": [
 		{
@@ -15,135 +26,60 @@
 
 	"tags": [
 		{
-			"name": "Users Additional Info",
-			"description": "Endpoints untuk pengelolaan data tambahan user"
+			"name": "User Extras",
+			"description": "/users-extras endpoint mengelola tambahan user"
 		},
+
 		{
-			"name": "Scan",
-			"description": "Endpoints untuk mengirim scan tanaman"
+			"name": "Plant Scan",
+			"description": "/scan endpoint untuk upload gambar tanaman yang akan dianalisis"
 		},
+
 		{
-			"name": "Results",
-			"description": "Endpoints untuk data hasil scan"
+			"name": "Scan Results",
+			"description": "/results endpoint untuk mengelola data hasil scan"
 		},
+
 		{
 			"name": "Datasets",
-			"description": "Endpoints untuk mengelola dataset"
+			"description": "/datasets endpoint untuk mengelola kontribusi dataset tanaman"
 		},
+
 		{
 			"name": "Plants",
-			"description": "Plant information data endpoint"
+			"description": "/plants Data detail tanaman"
 		},
-		{
-			"name": "Diseases",
-			"description": "Diseases information data endpoint"
-		},
-		{
-			"name": "GET",
-			"description": "Endpoints dengan method GET"
-		},
-		{
-			"name": "POST",
-			"description": "Endpoints dengan method POST"
-		},
-		{
-			"name": "PUT",
-			"description": "Endpoints dengan method PUT"
-		},
-		{
-			"name": "DELETE",
-			"description": "Endpoints dengan method DELETE"
-		}
-	],
 
-	"servers": [
 		{
-			"description": "Local Development Server",
-			"url": "http://localhost:8080"
+			"name": "Pests and Diseases",
+			"description": "/datasets Data detail penyakit/hama"
 		}
 	],
 
 	"paths": {
-		"/user_additional_info/{userUid}": {
-			"post": {
-				"tags": ["Users Additional Info", "POST"],
-
-				"summary": "Melengkapi data tambahan pribadi",
-
-				"description": "Setelah mendaftar via google/facebook oauth, user melengkapi data umum ke endpoint ini. Hanya user yang belum memiliki data tambahan",
-
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"$ref": "#/components/schemas/UserAdditionalInfo"
-							}
-						}
+		"/users-extras/{userUid}": {
+			"parameters": [
+				{
+					"required": true,
+					"in": "path",
+					"name": "userUid",
+					"schema": {
+						"type": "string"
 					}
-				},
+				}
+			],
 
+			"get": {
+				"tags": ["User Extras", "GET"],
+				"description": "Data tambahan untuk user",
 				"responses": {
 					"200": {
-						"description": "OK | Berhasil menambahkan data user"
-					},
-
-					"400": {
-						"description": "BAD REQUEST | User memasukkan data yang invalid"
-					},
-
-					"401": {
-						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
-							}
-						}
-					},
-
-					"403": {
-						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string",
-											"example": "forbidden"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"404": {
-						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mengganti data user tetapi userId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string",
-											"example": "user {userId} tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+						"description": "OK | Berhasil mendapatkan data tambahan user berdasarkan user uid",
 
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/User Extras Schema"
 								}
 							}
 						}
@@ -151,80 +87,29 @@
 				}
 			},
 
-			"get": {
-				"tags": ["Users Additional Info", "GET"],
+			"post": {
+				"tags": ["User Extras", "POST"],
 
-				"summary": "Mendapatkan detail user tambahan pribadi",
+				"description": "Membuat data tambahan untuk user setelah register pertama kali",
 
-				"description": "",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Create User Extras Request Schema"
+							}
+						}
+					}
+				},
 
 				"responses": {
-					"200": {
-						"description": "OK | Berhasil mendapatkan data user",
-
-						"content": {
-							"application/js": {
-								"schema": {
-									"$ref": "#/components/schemas/UserAdditionalInfo"
-								}
-							}
-						}
-					},
-
-					"401": {
-						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
+					"201": {
+						"description": "CREATED | Berhasil menambahkan data tambahan user",
 
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
-							}
-						}
-					},
-
-					"403": {
-						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string",
-											"example": "forbidden"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"404": {
-						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string",
-											"example": "user {userId} tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/Response Success Schema"
 								}
 							}
 						}
@@ -233,225 +118,71 @@
 			},
 
 			"put": {
-				"tags": ["Users Additional Info", "PUT"],
-
-				"summary": "Mengupdate detail user tambahan pribadi",
-
-				"description": "",
-
-				"responses": {
-					"200": {
-						"description": "OK | Berhasil mengupdate data user"
-					},
-
-					"400": {
-						"description": "BAD REQUEST | User memasukkan data yang invalid",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "first name harus diisi"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"401": {
-						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
-							}
-						}
-					},
-
-					"403": {
-						"description": "FORBIDDEN | User mencoba mengubah data user lain. User dengan data tambahan yang sudah diisi juga akan mendapatkan error ini.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "forbidden"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"404": {
-						"description": "FORBIDDEN | User dengan userId tidak ditemukan. Error ini saat admin mencoba mendapatkan data user tetapi userId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "user {userId} tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/InternalError"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-
-		"/user_additional_info/{userUid}/promote_to_admin": {
-			"post": {
-				"tags": ["Users Additional Info", "POST"],
-				"responses": {
-					"200": {
-						"description": "OK | Success promote user to admin"
-					}
-				}
-			}
-		},
-
-		"/user_additional_info/{userUid}/promote_to_expert": {
-			"post": {
-				"tags": ["Users Additional Info", "POST"],
-				"responses": {}
-			}
-		},
-
-		"/user_additional_info/{userUid}/expert_proposal": {
-			"post": {
-				"tags": ["Users Additional Info", "POST"],
-				"responses": {}
-			},
-			"get": {
-				"tags": ["Users Additional Info", "GET"],
-				"responses": {}
-			}
-		},
-
-		"/scan": {
-			"post": {
-				"tags": ["Scan", "POST"],
-				"summary": "Memindai gambar",
-				"description": "Endpoint ini digunakan untuk memindai gambar yang dikirimkan melalui request body. Gambar akan dianalisis dan hasilnya dikembalikan dalam response.",
+				"tags": ["User Extras", "PUT"],
+				"description": "Memperbarui data tambahan user",
 				"requestBody": {
 					"content": {
-						"multipart/form-data": {
+						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"image": {
-										"type": "string",
-										"format": "binary",
-										"description": "Gambar yang akan dipindai"
-									}
-								},
-								"required": ["image"]
+								"$ref": "#/components/schemas/Update User Extras Request Schema"
 							}
 						}
 					}
 				},
 				"responses": {
 					"200": {
-						"description": "OK | Berhasil memindai gambar",
+						"description": "OK | Berhasil memperbarui data tambahan user",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"scanResult": {
-											"type": "object",
-											"description": "Hasil pemindaian gambar",
-											"properties": {
-												"detectedObject": {
-													"type": "string",
-													"example": "Tomato Plant"
-												},
-												"confidence": {
-													"type": "number",
-													"format": "float",
-													"example": 0.98
-												}
-											}
-										}
-									}
+									"$ref": "#/components/schemas/Response Success Schema"
 								}
 							}
 						}
-					},
-					"400": {
-						"description": "BAD REQUEST | Gambar tidak valid atau format tidak sesuai",
+					}
+				}
+			},
+
+			"delete": {
+				"tags": ["User Extras", "DELETE"],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil menghapus data tambahan user",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "gambar tidak valid"
-										}
-									}
+									"$ref": "#/components/schemas/Response Success Schema"
 								}
 							}
 						}
-					},
-					"401": {
-						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
+					}
+				}
+			}
+		},
+
+		"/scan": {
+			"post": {
+				"tags": ["Plant Scan", "POST"],
+
+				"requestBody": {
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "string",
+								"format": "binary"
 							}
 						}
-					},
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
+					}
+				},
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil memindai tanaman",
+
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/Scan Response Schema"
 								}
 							}
 						}
@@ -462,94 +193,14 @@
 
 		"/results": {
 			"get": {
-				"tags": ["Results", "GET"],
-				"summary": "Menampilkan hasil pemindaian gambar",
-				"description": "Endpoint ini menampilkan hasil dari pemindaian gambar yang sebelumnya dikirim ke endpoint /scan.",
-				"parameters": [
-					{
-						"name": "scanId",
-						"in": "query",
-						"required": true,
-						"description": "ID pemindaian untuk mengambil hasil spesifik",
-						"schema": {
-							"type": "string",
-							"example": "abc123xyz"
-						}
-					}
-				],
+				"tags": ["Scan Results", "GET"],
 				"responses": {
 					"200": {
-						"description": "OK | Berhasil mendapatkan hasil pemindaian",
+						"description": "OK | Berhasil mendapatkan list hasil scan",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"scanResult": {
-											"type": "object",
-											"description": "Hasil pemindaian gambar",
-											"properties": {
-												"detectedObject": {
-													"type": "string",
-													"example": "Tomato Plant"
-												},
-												"confidence": {
-													"type": "number",
-													"format": "float",
-													"example": 0.98
-												},
-												"timestamp": {
-													"type": "string",
-													"format": "date-time",
-													"example": "2024-11-11T12:34:56Z"
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "BAD REQUEST | scanId tidak valid atau tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "scanId tidak valid atau tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "UNAUTHORIZED | User yang tidak terdaftar atau tidak login mencoba mengakses endpoint",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/Results List Response Schema"
 								}
 							}
 						}
@@ -557,76 +208,28 @@
 				}
 			}
 		},
-		"/results/{resultId}": {
-			"get": {
-				"tags": ["Results", "GET"],
-				"summary": "Menampilkan hasil pemindaian berdasarkan resultId",
-				"description": "Endpoint ini menampilkan hasil spesifik dari pemindaian gambar berdasarkan resultId.",
-				"parameters": [
-					{
-						"name": "resultId",
-						"in": "path",
-						"required": true,
-						"description": "ID hasil pemindaian untuk mendapatkan detail hasil tertentu",
-						"schema": {
-							"type": "string",
-							"example": "xyz789abc"
-						}
+
+		"/results/{resultUid}": {
+			"parameters": [
+				{
+					"required": true,
+					"in": "path",
+					"name": "resultUid",
+					"schema": {
+						"type": "string"
 					}
-				],
+				}
+			],
+
+			"get": {
+				"tags": ["Scan Results", "GET"],
 				"responses": {
 					"200": {
-						"description": "OK | Berhasil mendapatkan detail hasil pemindaian",
+						"description": "OK | Berhasil mendapatkan hasil scan berdasarkan uid dari hasil",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"scanResult": {
-											"type": "object",
-											"description": "Detail hasil pemindaian gambar",
-											"properties": {
-												"detectedObject": {
-													"type": "string",
-													"example": "Tomato Plant"
-												},
-												"confidence": {
-													"type": "number",
-													"format": "float",
-													"example": 0.98
-												},
-												"timestamp": {
-													"type": "string",
-													"format": "date-time",
-													"example": "2024-11-11T12:34:56Z"
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "NOT FOUND | resultId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "resultId tidak ditemukan"
-										}
-									}
+									"$ref": "#/components/schemas/Disease Result Response Schema"
 								}
 							}
 						}
@@ -635,78 +238,14 @@
 			},
 
 			"delete": {
-				"tags": ["Results", "DELETE"],
-				"summary": "Menghapus hasil pemindaian berdasarkan resultId",
-				"description": "Endpoint ini menghapus hasil pemindaian tertentu berdasarkan resultId.",
-				"parameters": [
-					{
-						"name": "resultId",
-						"in": "path",
-						"required": true,
-						"description": "ID hasil pemindaian untuk menghapus hasil tertentu",
-						"schema": {
-							"type": "string",
-							"example": "xyz789abc"
-						}
-					}
-				],
+				"tags": ["Scan Results", "DELETE"],
 				"responses": {
 					"200": {
-						"description": "OK | Hasil pemindaian berhasil dihapus",
+						"description": "OK | Berhasil menghapus data hasil scan",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"message": {
-											"type": "string",
-											"example": "Hasil pemindaian berhasil dihapus"
-										}
-									}
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "NOT FOUND | resultId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "resultId tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "UNAUTHORIZED | User tidak memiliki izin untuk menghapus data",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizedError"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error server tidak di ekspos",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/Response Success Schema"
 								}
 							}
 						}
@@ -715,124 +254,37 @@
 			}
 		},
 
-		"/result/{resultId}/rate": {
-			"post": {
-				"tags": ["Results", "POST"],
-				"summary": "Memberikan rating pada hasil pemindaian",
-				"description": "Endpoint ini memungkinkan pengguna untuk memberikan rating pada hasil pemindaian gambar berdasarkan resultId.",
-				"parameters": [
-					{
-						"name": "resultId",
-						"in": "path",
-						"required": true,
-						"description": "ID hasil pemindaian untuk diberikan rating",
-						"schema": {
-							"type": "string",
-							"example": "xyz789abc"
-						}
-					}
-				],
-				"requestBody": {
-					"description": "Payload untuk memberikan rating",
+		"/results/{resultUid}/rate": {
+			"parameters": [
+				{
 					"required": true,
+					"in": "path",
+					"name": "resultUid",
+					"schema": {
+						"type": "string"
+					}
+				}
+			],
+
+			"post": {
+				"tags": ["Scan Results", "POST"],
+				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"rating": {
-										"type": "integer",
-										"description": "Rating yang diberikan pada hasil pemindaian",
-										"example": 4,
-										"minimum": 1,
-										"maximum": 5
-									}
-								},
-								"required": ["rating"]
+								"$ref": "#/components/schemas/Result Rate Request Schema"
 							}
 						}
 					}
 				},
+
 				"responses": {
 					"200": {
-						"description": "OK | Rating berhasil ditambahkan",
+						"description": "OK | Berhasil memberikan rating untuk hasil scan",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"message": {
-											"type": "string",
-											"example": "Rating berhasil ditambahkan"
-										},
-										"data": {
-											"type": "object",
-											"properties": {
-												"resultId": {
-													"type": "string",
-													"example": "xyz789abc"
-												},
-												"rating": {
-													"type": "integer",
-													"example": 4
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "BAD REQUEST | Permintaan tidak valid atau rating berada di luar rentang yang diizinkan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "Rating harus antara 1 hingga 5"
-										}
-									}
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "NOT FOUND | resultId tidak ditemukan",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": false
-										},
-										"error": {
-											"type": "string",
-											"example": "resultId tidak ditemukan"
-										}
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "INTERNAL SERVER ERROR | Error pada server",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/InternalError"
+									"$ref": "#/components/schemas/Response Success Schema"
 								}
 							}
 						}
@@ -843,55 +295,335 @@
 
 		"/datasets": {
 			"post": {
-				"tags": ["Datasets", "POST"]
+				"tags": ["Datasets", "POST"],
+
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Dataset Create Schema"
+							}
+						}
+					}
+				},
+
+				"responses": {
+					"201": {
+						"description": "CREATED | Berhasil menambahkan gambar.",
+						"content": {
+							"multipart/form-data": {
+								"schema": {
+									"$ref": "#/components/schemas/Response Success Schema"
+								}
+							}
+						}
+					}
+				}
 			},
 
 			"get": {
-				"tags": ["Datasets", "GET"]
+				"tags": ["Datasets", "GET"],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "plantScientificName",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "diseaseScientificName",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "take",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "start",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"description": "Mendapatkan list dataset pribadi (hanya expert)",
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan list dataset",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Dataset Schema"
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		},
 
-		"/datasets/{datasetId}": {
+		"/datasets/{datasetUid}": {
+			"parameters": [
+				{
+					"required": true,
+					"in": "path",
+					"name": "datasetUid",
+					"schema": {
+						"type": "string"
+					}
+				}
+			],
+
 			"get": {
-				"tags": ["Datasets", "GET"]
+				"tags": ["Datasets", "GET"],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan detail dataset (hanya expert)",
+
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Dataset Schema"
+								}
+							}
+						}
+					}
+				}
 			},
 
 			"put": {
-				"tags": ["Datasets", "PUT"]
+				"tags": ["Datasets", "PUT"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Dataset Create Schema"
+							}
+						}
+					}
+				},
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil memperbarui dataset",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Response Success Schema"
+								}
+							}
+						}
+					}
+				}
 			},
 
 			"delete": {
-				"tags": ["Datasets", "DELETE"]
+				"tags": ["Datasets", "DELETE"],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil menghapus dataset",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Response Success Schema"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/plants/{plantUid}": {
+			"parameters": [
+				{
+					"required": true,
+					"in": "path",
+					"name": "plantUid",
+					"schema": {
+						"type": "string"
+					}
+				}
+			],
+
+			"get": {
+				"tags": ["Plants", "GET"],
+
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan data tanaman",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Plant Schema"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/diseases/{diseaseUid}": {
+			"parameters": [
+				{
+					"required": true,
+					"in": "path",
+					"name": "diseaseUid",
+					"schema": {
+						"type": "string"
+					}
+				}
+			],
+
+			"get": {
+				"tags": ["Pests and Diseases", "GET"],
+				"responses": {
+					"200": {
+						"description": "OK | Berhasil mendapatkan data tanaman",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Disease Schema"
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	},
 
 	"components": {
 		"schemas": {
-			"UserAdditionalInfo": {
+			"Response Success Schema": {
 				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					}
+				}
+			},
+
+			"Response Error Schema": {
+				"type": "object",
+
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": false
+					},
+					"error": {
+						"type": "string"
+					}
+				}
+			},
+
+			"User Extras Schema": {
+				"type": "object",
+
 				"properties": {
 					"isAdmin": {
 						"type": "boolean",
 						"default": false
 					},
+
 					"isExpert": {
 						"type": "boolean",
 						"default": false
 					},
+
 					"company": {
 						"type": "string",
 						"example": "Universitas A"
 					},
+
 					"roleAtCompany": {
 						"type": "string",
 						"example": "student"
 					}
 				},
+
 				"required": ["isAdmin", "isExpert"]
 			},
 
-			"DiseaseResult": {
+			"Create User Extras Request Schema": {
+				"type": "object",
+
+				"properties": {
+					"company": {
+						"type": "string",
+						"example": "Universitas A"
+					},
+
+					"roleAtCompany": {
+						"type": "string",
+						"example": "student"
+					}
+				}
+			},
+
+			"Update User Extras Request Schema": {
+				"type": "object",
+
+				"properties": {
+					"company": {
+						"type": "string",
+
+						"example": "Universitas A"
+					},
+
+					"roleAtCompany": {
+						"type": "string",
+
+						"example": "student"
+					}
+				}
+			},
+
+			"Scan Response Schema": {
+				"type": "object",
+				"properties": {
+					"resultUid": {
+						"type": "string"
+					}
+				}
+			},
+
+			"Results List Response Schema": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Disease Result Response Schema"
+				}
+			},
+
+			"Result Rate Request Schema": {
+				"type": "object",
+				"properties": {
+					"rate": {
+						"type": "number"
+					},
+					"feedback": {
+						"type": "string"
+					}
+				}
+			},
+
+			"Disease Result Response Schema": {
 				"type": "object",
 				"properties": {
 					"plantScientificName": {
@@ -906,18 +638,34 @@
 
 					"diseaseType": {
 						"type": "string",
-						"enum": ["disease", "pest", "nutrientDeficiency"]
+						"enum": ["disease", "pest"],
+						"example": "pest"
+					},
+
+					"diseaseScientificName": {
+						"type": "string",
+
+						"example": "Valanga nigricornis"
 					},
 
 					"accuracy": {
 						"type": "number",
 						"example": 90
+					},
+
+					"resultRating": {
+						"type": "number"
+					},
+
+					"resultFeedback": {
+						"type": "string"
 					}
 				}
 			},
 
-			"HealthyResult": {
+			"Healthy Result Response Schema": {
 				"type": "object",
+
 				"properties": {
 					"plantScientificName": {
 						"type": "string",
@@ -932,19 +680,37 @@
 					"accuracy": {
 						"type": "number",
 						"example": 80
+					},
+
+					"resultRating": {
+						"type": "number"
+					},
+
+					"resultFeedback": {
+						"type": "string"
 					}
 				}
 			},
 
-			"PlantSchema": {
+			"Plant Schema": {
 				"type": "object",
+
 				"properties": {
 					"plantScientificName": {
 						"type": "string",
+
 						"example": "Oryza sativa"
 					},
+
+					"description": {
+						"type": "string",
+
+						"example": "Oryza sativa is a species of grass in the family Oryzaceae, native to Asia and Africa."
+					},
+
 					"classification": {
 						"type": "object",
+
 						"properties": {
 							"kingdom": {
 								"type": "string",
@@ -981,17 +747,13 @@
 								"example": "sativa"
 							}
 						}
-					},
-
-					"description": {
-						"type": "string",
-						"example": "Oryza sativa is a species of grass in the family Oryzaceae, native to Asia and Africa."
 					}
 				}
 			},
 
-			"DiseaseSchema": {
+			"Disease Schema": {
 				"type": "object",
+
 				"properties": {
 					"diseaseScientificName": {
 						"type": "string",
@@ -1007,33 +769,41 @@
 						"type": "string",
 						"example": "Xanthomonas oryzae is a bacterium that causes leaf spot disease in rice."
 					},
+
 					"classification": {
 						"type": "object",
+
 						"properties": {
 							"kingdom": {
 								"type": "string",
 								"example": "Bacteria"
 							},
+
 							"phylum": {
 								"type": "string",
 								"example": "Proteobacteria"
 							},
+
 							"class": {
 								"type": "string",
 								"example": "Gammaproteobacteria"
 							},
+
 							"order": {
 								"type": "string",
 								"example": "Xanthomonadales"
 							},
+
 							"family": {
 								"type": "string",
 								"example": "Xanthomonadaceae"
 							},
+
 							"genus": {
 								"type": "string",
 								"example": "Xanthomonas"
 							},
+
 							"species": {
 								"type": "string",
 								"example": "oryzae"
@@ -1043,18 +813,22 @@
 
 					"pesticide": {
 						"type": "string",
+
 						"example": "Bacitracin"
 					},
 
 					"relatedArticles": {
 						"type": "array",
+
 						"items": {
 							"type": "object",
+
 							"properties": {
 								"title": {
 									"type": "string",
 									"example": "Title of the article"
 								},
+
 								"url": {
 									"type": "string",
 									"example": "https://example.com/article"
@@ -1065,7 +839,7 @@
 				}
 			},
 
-			"PestSchema": {
+			"Pest Schema": {
 				"type": "object",
 				"properties": {
 					"pestScientificName": {
@@ -1140,27 +914,109 @@
 				}
 			},
 
-			"InternalError": {
+			"Dataset Create Schema": {
 				"type": "object",
 				"properties": {
-					"error": {
+					"file": {
 						"type": "string",
-						"example": "unhandeled client error"
+						"format": "binary",
+						"description": "Gambar tanaman yang akan ditambahkan ke dataset."
+					},
+					"description": {
+						"type": "string",
+						"description": "Deskripsi singkat tentang gambar."
+					},
+					"boundingBoxes": {
+						"type": "array",
+						"description": "Daftar bounding box.",
+						"items": {
+							"type": "object",
+							"properties": {
+								"x_min": {
+									"type": "number",
+									"description": "Koordinat X minimum dari bounding box."
+								},
+								"y_min": {
+									"type": "number",
+									"description": "Koordinat Y minimum dari bounding box."
+								},
+								"x_max": {
+									"type": "number",
+									"description": "Koordinat X maksimum dari bounding box."
+								},
+								"y_max": {
+									"type": "number",
+									"description": "Koordinat Y maksimum dari bounding box."
+								},
+								"label": {
+									"type": "string",
+									"description": "Label penyakit yang diberikan oleh expert."
+								}
+							},
+							"required": [
+								"x_min",
+								"y_min",
+								"x_max",
+								"y_max",
+								"label"
+							]
+						}
 					}
-				}
+				},
+				"required": ["file", "boundingBoxes"]
 			},
 
-			"UnauthorizedError": {
+			"Dataset Schema": {
 				"type": "object",
 				"properties": {
-					"error": {
+					"imageUrl": {
+						"type": "string"
+					},
+
+					"description": {
 						"type": "string",
-						"example": "unauthorized"
+						"description": "Deskripsi singkat tentang gambar."
+					},
+					"boundingBoxes": {
+						"type": "array",
+						"description": "Daftar bounding box.",
+						"items": {
+							"type": "object",
+							"properties": {
+								"x_min": {
+									"type": "number",
+									"description": "Koordinat X minimum dari bounding box."
+								},
+								"y_min": {
+									"type": "number",
+									"description": "Koordinat Y minimum dari bounding box."
+								},
+								"x_max": {
+									"type": "number",
+									"description": "Koordinat X maksimum dari bounding box."
+								},
+								"y_max": {
+									"type": "number",
+									"description": "Koordinat Y maksimum dari bounding box."
+								},
+								"label": {
+									"type": "string",
+									"description": "Label penyakit yang diberikan oleh expert."
+								}
+							},
+							"required": [
+								"x_min",
+								"y_min",
+								"x_max",
+								"y_max",
+								"label"
+							]
+						}
 					}
-				}
+				},
+				"required": ["file", "boundingBoxes"]
 			}
 		},
-
 		"securitySchemes": {
 			"JWT": {
 				"description": "JSON Web Token dari firebase",
